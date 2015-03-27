@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <p>
+      <%= "#{@user.resource.name}" %>-
+    </p>
+    <p>
+      Some feedback for you:
+    </p>
+    <p>
+      <%= @user.feedback %>
+    </p>
+    <% unless @user.is_anonymous? %>
+    <p>
+      Best, <br />
+      <%= @user.name %>
+    </p>
+    <% end %>
+    <p>
+      --------------------
+      <br />
+      Ravi Belani <br />
+      <%= mail_to "ravi.belani@gmail.com" %> <br />
+      415-309-8860 <br />
+      @rbelani <br />
+      Fenwick and West Lecturer of Entrepreneurship, Stanford University <br />
+      Director, Alchemist Accelerator  <br />
+      Need a Co-Founder? Check out <a href="http://www.foundershookup.com">foundershookup.com</a> <br />
+    </p>
+  </body>
+</html>

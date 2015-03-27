@@ -1,0 +1,28 @@
+<br />
+<br />
+<br />
+<h1>Generate Report</h1>
+<br />
+<%= form_for @scrape, :format => :csv, "role" => "form" do |f| %>
+   <% if @scrape.errors.any? %>
+     <% flash.now[:error] = @scrape.errors.full_messages.join(', and ') %>
+   <% end %>
+   <div class="form-group">
+      <%= f.label :url, "Select URL" %>
+      <%= f.select :url, [["https://alumni.mckinsey.com", "alumni.mckinsey.com"], ["https://www.alumni.hbs.edu", "alumni.hbs.edu"]], {:include_blank => "Select"} %>
+     <p class="help-block">Select Url to scrap data from.</p>
+   </div>
+   <br />
+   <div class="form-group">
+      <label for="searchtype">Search Type</label>
+      <b>Everyone</b>
+   </div>
+   <br />
+   <div class="form-group">
+      <%= f.label :keyword %>
+      <%= f.text_field :keyword %>
+   </div>
+   <br />
+   <%= f.submit "Export Now", :class => "btn btn-default" %>
+<% end %>
+

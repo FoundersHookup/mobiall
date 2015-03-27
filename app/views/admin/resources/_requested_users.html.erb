@@ -1,0 +1,14 @@
+<h1>Requested User</h1>
+
+<%
+  @resource = Resource.find params[:id]
+  @requested_users = @resource.requested_users
+%>
+
+<% unless @requested_users.blank? %>
+  <% @requested_users.each_with_index do |user, index| %>
+    <p><%= index+1 %>. &nbsp; <%= link_to user.name,  admin_requested_user_path(user) %></p>
+  <% end %>
+<% else %>
+  <h3>No Requested Users Yet.</h3>
+<% end %>

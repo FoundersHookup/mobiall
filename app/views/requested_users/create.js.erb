@@ -1,0 +1,35 @@
+<% if @requested_user.errors.any? %>
+  <% @requested_user.errors.full_messages.each do |msg| %>
+    alert("<%= msg.html_safe %>");
+    <% if msg.html_safe.eql?("Email Already Connected With This Company.") %>
+      $("input[type='submit'].resource_<%= @requested_user.resource_id %>").val("Already Connected");
+    <% end %>
+  <% end %>
+<% else %>
+  <%  %>
+  <% if params[:commit].eql?("Ok") %>
+      $('span#first_name').html("<%= params[:requested_user][:first_name] %>");
+      $('span#last_name').html("<%= params[:requested_user][:last_name] %>");
+      $('span#email').html("<%= params[:requested_user][:email] %>");
+      $('span#company_name').html("<%= params[:requested_user][:company_name] %>");
+      $('span#phone').html("<%= params[:requested_user][:phone] %>");
+      $(".interested_form").hide();
+      $("#labeled_info").show();
+  <% else %>
+      $("div.form_below_text p").html("Connected you via email to <%= @requested_user.resource.name %>!");
+      $("#<%= @requested_user.resource_id %>").css("background-color","#eee");
+      $("input[type='submit'].resource_<%= @requested_user.resource_id %>").val("Already Connected");
+      $.cookie("user_first_name", "<%= @requested_user.first_name %>", {expires: 7, path: '/'});
+      $.cookie("user_last_name", "<%= @requested_user.last_name %>", {expires: 7, path: '/'});
+      $.cookie("user_email", "<%= @requested_user.email %>", {expires: 7, path: '/'});
+      $.cookie("user_company_name", "<%= @requested_user.company_name %>", {expires: 7, path: '/'});
+      <% if @requested_user.resource.other_company_option %>
+        $('#feedback_dialog').html("<%= escape_javascript(render ('other_company_form')) %>");
+        $('#feedback_dialog').modal('show');
+      <% end %>
+  <% end %>
+  
+
+<% end %>
+
+

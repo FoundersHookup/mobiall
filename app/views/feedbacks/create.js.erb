@@ -1,0 +1,15 @@
+<% if @feedback.errors.any? %>
+  <% @feedback.errors.full_messages.each do |msg| %>
+    alert("<%= msg.html_safe %>");
+  <% end %>
+<% else %>
+  $("#<%= @feedback.resource_id %>").css("background-color","#eee");
+  $.cookie("user_first_name", "<%= @feedback.last_name %>", {expires: 7, path: '/'});
+  $.cookie("user_last_name", "<%= @feedback.first_name %>", {expires: 7, path: '/'});
+  $.cookie("user_email", "<%= @feedback.email %>", {expires: 7, path: '/'});
+  $.cookie("user_company_name", "<%= @feedback.company_name %>", {expires: 7, path: '/'});
+  $('#feedback_dialog').html("<%= escape_javascript(render ('form')) %>");
+  $('#feedback_dialog').modal('show');
+<% end %>
+
+

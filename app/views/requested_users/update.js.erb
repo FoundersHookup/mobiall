@@ -1,0 +1,6 @@
+$("#feedback_dialog").modal('hide');
+<% if params[:commit].eql?("Add Company") %>
+alert("Company Added. Thank you!");
+<% else %>
+alert("Feedback Sent. Thank you!");
+<% end %>

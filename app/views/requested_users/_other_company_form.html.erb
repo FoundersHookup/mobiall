@@ -1,0 +1,14 @@
+<div class="modal-header">
+  <h3>Other Company Name</h3>
+</div>
+<%= form_for @requested_user, :url => requested_user_url(@requested_user), :remote => true do |f| %>
+  <div class="modal-body">
+    <p>
+      Enter Company Name
+      <%= f.text_field :other_company_name, {:style => "float: right;"}  %>
+    </p>
+  </div>
+  <div class="modal-footer">
+    <%= f.submit "Add Company", :class => "btn primary" %>
+  </div>
+<% end %>

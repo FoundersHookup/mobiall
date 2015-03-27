@@ -1,0 +1,39 @@
+<div class="modal-header">
+  <h3>Comments</h3>
+</div>
+<%= form_for @feedback, :url => feedback_url(@feedback), :remote => true do |f| %>
+
+  <div class="modal-body">
+    <p>
+      Please use this to relay comments / feedback to us on the accelerator OR any specific startup (please write the startup name at the top of your comment
+      if you are sending comments re: a startup). Detailed, honest feedback is a true gift. If you would like your feedback to be anonymous, click the box below.
+      You can use this form unlimited times to send comments. Thank You.
+    </p>
+    <%= f.check_box :is_anonymous, :style => "vertical-align: top;" %> Make Anonymous
+    <br /> <br />
+    <%= f.text_area :feedback, :style => "height: 72px; width: 514px;" %>
+    <% if @feedback.resource.rating_option %>
+      <br />
+   
+      <p>
+        On a scale of 0-10, how likely would you be to recommend that a VC colleague take a meeting with this company (0 = Not At All, 10 = With Great Fervor)
+        <br />
+        <br />
+        <%= f.select :user_rating, options_for_select([["Select One", ""], ["0", ""], "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],:disabled => ["Select One"]) %>
+      </p>
+    <% end %>
+
+    <% if @feedback.resource.other_company_option %>
+  
+    
+      <p style="width: 390px;">
+        Enter Company Name
+        <%= f.text_field :other_company_name, {:style => "float: right;"} %>
+      </p>
+    <% end %>
+
+  </div>
+  <div class="modal-footer">
+    <%= f.submit "Send", :class => "btn primary" %>
+  </div>
+<% end %>

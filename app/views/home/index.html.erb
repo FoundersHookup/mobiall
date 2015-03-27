@@ -1,0 +1,112 @@
+<div class="header_text">
+    <h1>Alchemist Connect</h1>
+  </div>
+
+<%= form_for @requested_user , :remote => true do |f| %>
+<%= f.hidden_field :resource_id, :value => "" %>
+<div class="interested_form">
+  <p>Please enter your contact information below first. </p>
+  <table width="100%">
+    <tr class="form_text">
+      <td></td>
+      <td>First Name<span style="color: red;">*</span></td>
+      <td style="text-align: right;"><%= f.text_field :first_name, :style => "height: 15px;" %></td>
+      <td></td>
+    </tr>
+    <tr class="form_text">
+      <td></td>
+      <td>Last Name<span style="color: red;">*</span></td>
+      <td style="text-align: right;"><%= f.text_field :last_name, :style => "height: 15px;" %></td>
+      <td></td>
+    </tr>
+    <tr class="form_text">
+      <td></td>
+      <td>Email<span style="color: red;">*</span></td>
+      <td style="text-align: right;"><%= f.text_field :email, :style => "height: 15px;" %></td>
+      <td></td>
+    </tr>
+    <tr class="form_text">
+      <td></td>
+      <td>Company Name<span style="color: red;">*</span></td>
+      <td style="text-align: right;"><%= f.text_field :company_name, :style => "height: 15px;" %></td>
+      <td></td>
+    </tr>
+    <tr class="form_text">
+      <td></td>
+      <td>Phone(opt)</td>
+      <td style="text-align: right;"><%= f.text_field :phone, :style => "height: 15px;" %></td>
+      <td></td>
+    </tr>
+    <tr class="form_text">
+      <td></td>
+      <td><%= f.submit "Ok", :class => "btn btn-primary" %></td>
+      <td style="text-align: right;">&nbsp;</td>
+      <td></td>
+    </tr>
+  </table>
+</div>
+
+<div id="labeled_info">
+  <span id="first_name"></span>&nbsp;<span id="last_name"></span>&nbsp;*&nbsp;&nbsp;<span id="company_name"></span>&nbsp;*&nbsp;&nbsp;<span id="email"></span>&nbsp;*&nbsp;&nbsp;<span id="phone"></span>&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" class="btn btn-primary" id="display_edit_form">Edit My Profile</a>
+</div>
+
+<div class="form_below_text">
+  <p></p>
+</div>
+
+<div class='overlay' style="display: none;">
+      <%= image_tag("loading.gif") %>
+    </div>
+
+<div class="resources">
+  <div class="resource" id="<%= @alchemist_resource.first.id %>">
+    <div style="float: left; padding-top: 13px; padding-bottom: 20px; width: 100%;">
+      <%= @alchemist_resource.first.name %>
+    </div>
+        <p class="name" style="float: left; width: 100%;">
+          <%= @alchemist_resource.first.description %>
+        </p>
+        <br /><br /><br />
+
+        <%= f.submit "Connect Me In!", :class => "btn btn-primary resource_#{@alchemist_resource.first.id}" %>
+
+        <% if @alchemist_resource.first.show_comment_button.eql?(true) %>
+          <a data-toggle="modal" href="javascript:void(0)" data-backdrop="true" data-keyboard="true" class="btn btn-primary <%#= "resource_#{resource.id}" %>" id="feedback_link">Comment</a>
+        <% end %>
+  </div>
+
+  <% @resources.each do |resource| %>
+  <div class="resource" id="<%= resource.id %>">
+    <div style="float: left; padding-top: 13px; padding-bottom: 20px;">
+      <%= resource.name %>
+    </div>
+    <!--div style="float: right">
+      <%# if resource.name.eql?("JyMob") %>
+        <%#= image_tag(resource.logo_url, :alt => "", :style => "width: 50px;") %>
+      <%# else %>
+        <%#= image_tag(resource.logo_url, :alt => "", :style => "width: 110px;") %>
+      <%# end %>
+    </div-->
+        <p class="name" style="float: left;">
+          <%= resource.description %>
+        </p>
+        <br /><br /><br />
+
+        <%= f.submit "Connect Me In!", :class => "btn btn-primary resource_#{resource.id}" %>
+
+        <% if resource.show_comment_button.eql?(true) %>
+          <a data-toggle="modal" href="javascript:void(0)" data-backdrop="true" data-keyboard="true" class="btn btn-primary <%#= "resource_#{resource.id}" %>" id="feedback_link">Comment</a>
+        <% end %>
+        
+    </div>
+  <% end %>
+</div>
+
+<% end %>
+
+
+
+<div id="feedback_dialog" class="modal hide fade">
+    
+</div>
+

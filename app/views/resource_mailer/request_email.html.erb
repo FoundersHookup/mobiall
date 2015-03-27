@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <p>
+      <%= @user.resource.first_name %>, <%= @user.first_name %>-
+  </p>
+  <p>
+    We wanted to connect you two.
+  </p>
+  <p>
+    <%= @user.first_name %>, please meet <%= "#{@user.resource.first_name} #{@user.resource.last_name}" %> co-founder of <%= @user.resource.name %>. As you recall, <%= @user.resource.name %> is a
+    <%= @user.resource.description %>.
+  </p>
+  <p>
+    <%= @user.resource.first_name %>, please meet <%= "#{@user.first_name} #{@user.last_name}" %> of <%= @user.company_name %>, who expressed interest in connecting with you.
+  </p>
+  <p>
+    Emails above!
+  </p>
+  <p>
+    Best to each, <br /><br />
+    Ravi
+  </p>
+  <p>
+    --------------------
+    <br />
+    Ravi Belani <br />
+    <%= mail_to "ravi.belani@gmail.com" %> <br />
+    415-309-8860 <br />
+    @rbelani <br />
+    Fenwick and West Lecturer of Entrepreneurship, Stanford University <br />
+    Director, Alchemist Accelerator  <br />
+    Need a Co-Founder? Check out <a href="http://www.foundershookup.com">foundershookup.com</a> <br />
+  </p>
+ </body>
+</html>
