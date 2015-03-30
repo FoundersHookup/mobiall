@@ -1,11 +1,8 @@
-<br />
-<br />
-<br />
 <h1>Generate Report</h1>
 <br />
-<%= form_for @scrape, :format => :csv, "role" => "form" do |f| %>
+<%= form_for @scrape, "role" => "form" do |f| %>
    <% if @scrape.errors.any? %>
-     <% flash.now[:error] = @scrape.errors.full_messages.join(', and ') %>
+     <% flash.now[:error] = @scrape.errors.full_messages.join(' and ') %>
    <% end %>
    <div class="form-group">
       <%= f.label :url, "Select URL" %>
@@ -14,13 +11,19 @@
    </div>
    <br />
    <div class="form-group">
-      <label for="searchtype">Search Type</label>
+      <label for="search@scrapetype">Search Type</label>
       <b>Everyone</b>
    </div>
    <br />
    <div class="form-group">
       <%= f.label :keyword %>
       <%= f.text_field :keyword %>
+   </div>
+   <br />
+   <div class="form-group">
+      <%= f.label :email %>
+      <%= f.text_field :email %>
+      <p class="help-block">Generated Report will be send to this email</p>
    </div>
    <br />
    <%= f.submit "Export Now", :class => "btn btn-default" %>
