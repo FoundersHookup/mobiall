@@ -13,8 +13,8 @@ class ReportMailingJob < Struct.new(:scrap)
     if @scrap.url == "alumni.mckinsey.com"
       page = mechanize.get('https://alumni.mckinsey.com/')
       login_form = page.forms.first
-      login_form['login_id'] = "rbelani"
-      login_form['password'] = "Nrlife123"
+      login_form['login_id'] = "29310"
+      login_form['password'] = "McK1nsey"
 
       loggedin_page = login_form.submit
 
@@ -59,7 +59,7 @@ class ReportMailingJob < Struct.new(:scrap)
 
 
         @file = CSV.generate do |csv|
-          csv << ["Full Name", "Title", "Company", "City"]
+          csv << ["Full Name", "Title", "Company", "City", "Email", "Contact Number"]
           search_result.css("div.row div.span6 ul li").each do |row|
             name = row.css("div.results-mobile div.span5 span.mu-uc a").text
             city = row.css("div.results-mobile div.span5 span.mu-uc span.ash").text
@@ -71,8 +71,22 @@ class ReportMailingJob < Struct.new(:scrap)
             else
               title, company = "", ""
             end
+            unless row.css("div.results-mobile div.span5 div.row div.if-alumni a").empty?
+            alumni_id = row.css("div.results-mobile div.span5 div.row div.if-alumni a").first["id"]
+            alumn_detail_page = mechanize.get("https://www.alumni.hbs.edu/community/Pages/view-profile.aspx?alumId=#{alumni_id}")
+            alumn_email = alumn_detail_page.parser.css("a.profile-email-link").first.text rescue nil
+            if alumn_email.nil?
+              alumn_contact = [nil, nil, nil]
+            else
+              alumn_contact = []
+              alumn_detail_page.parser.css("div#profile div.row div.span7 div.row div.col2 div").each{|i| alumn_contact << i.text rescue ""}
+            end
+            else
+              alumn_email = nil
+              alumn_contact = [nil, nil, nil]
+            end
 
-            csv << [name, title, company, city]
+            csv << [name, title, company, city, alumn_email, "#{alumn_contact[1]} / #{alumn_contact[1]}"]
           end
         end
       end
@@ -88,12 +102,16 @@ class ReportMailingJob < Struct.new(:scrap)
   end
 
   def error(job, exception)
-    ReportMailer.error_email(@scrap, exception).deliver!
+    ReportMailer.error_email(@scrap, exception, job.last_error).deliver!
     puts "Error"
   end
 
   def failure(job)
-    ReportMailer.failure_email(@scrap).deliver!
+    ReportMailer.failure_email(@scrap, job.last_error).deliver!
     puts "Failure"
   end
+
+#  def max_attempts
+#    1
+#  end
 end
