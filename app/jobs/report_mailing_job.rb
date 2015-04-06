@@ -20,25 +20,30 @@ class ReportMailingJob < Struct.new(:scrap)
 
       search_form = loggedin_page.forms.second
 
-      search_form['keywords'] = @scrap.keyword
+      search_form['keywords'] = @scrap.keyword.chomp
 
       result_page = search_form.submit
 
       total_result = result_page.search("#action_head").at('.left')
 
-      unless total_result.text.scan(/\d+/).first.nil?
-        @scrape.result = total_result.text.scan(/\d+/).first
+      unless total_result.text.scan(/\d+/).last.nil?
+        @scrap.result = total_result.text.scan(/\d+/).last
 
         people = result_page.search("div[class='member clearfix']")
         @file = CSV.generate do |csv|
-          csv << ["Name", "Member Type", "Title", "Company", "City"]
+          csv << ["Name", "Email", "Member Type", "Title", "Company", "City"]
           people.each do |person|
+            next if person.at("div[class='full_name'] a").blank?
             full_name = person.at("div[class='full_name'] a").try(:text)
             type = person.at("div[class='full_name']").at("span[class='member_type alumni']").try(:text)
             title = person.at("div span[class='title']").try(:text)
             company = person.at("div span[class='company'] a").try(:text)
             location = person.at("div[class='year_office']").try(:text)
-            csv << [full_name, type, title, company, location]
+
+            uri = person.at("div[class='full_name'] a")["href"]
+            alumn_detail_page = mechanize.get("https://alumni.mckinsey.com#{uri}")
+            alumn_email = alumn_detail_page.search("div.preferred_email").at("span a").text
+            csv << [full_name, alumn_email, type, title, company, location]
           end
         end
       end
