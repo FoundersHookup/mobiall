@@ -42,7 +42,7 @@ class ReportMailingJob < Struct.new(:scrap)
 
             uri = person.at("div[class='full_name'] a")["href"]
             alumn_detail_page = mechanize.get("https://alumni.mckinsey.com#{uri}")
-            alumn_email = alumn_detail_page.search("div.preferred_email").at("span a").text
+            alumn_email = alumn_detail_page.search("div.preferred_email").at("span a").text rescue ""
             csv << [full_name, alumn_email, type, title, company, location]
           end
         end
