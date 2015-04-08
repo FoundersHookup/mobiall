@@ -6,7 +6,7 @@
    <% end %>
    <div class="form-group">
       <%= f.label :url, "Select URL" %>
-      <%= f.select :url, [["https://alumni.mckinsey.com", "alumni.mckinsey.com"], ["https://www.alumni.hbs.edu", "alumni.hbs.edu"]], {:include_blank => "Select"} %>
+      <%= f.select :url, [["https://alumni.mckinsey.com", "alumni.mckinsey.com"], ["https://www.alumni.hbs.edu", "alumni.hbs.edu"], ["https://Linkedin.com", "Linkedin.com"]], {:include_blank => "Select"} %>
      <p class="help-block">Select Url to scrap data from.</p>
    </div>
    <br />
@@ -20,6 +20,22 @@
       <%= f.text_field :keyword %>
    </div>
    <br />
+   <div class="linkedin_fields" style="display: none;">
+     <div class="form-group">
+        <%= f.label :zipcode %>
+        <%= f.text_field :zipcode %>
+     </div>
+     <br />
+     <div class="form-group">
+        <%= f.label :auth_code %>
+        <%= f.text_field :auth_code %>
+     </div>
+     
+     <div class="module_subheader smaller">
+        <em><a href="<%= @auth_url %>" target="_blank">Click here</a> to get the code and enter in below text box to verify.</em>
+      </div>
+     <br />
+   </div>
    <div class="form-group">
       <%= f.label :email %>
       <%= f.text_field :email %>
@@ -28,4 +44,7 @@
    <br />
    <%= f.submit "Export Now", :class => "btn btn-default" %>
 <% end %>
+
+
+ 
 
