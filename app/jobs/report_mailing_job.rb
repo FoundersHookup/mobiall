@@ -95,6 +95,10 @@ class ReportMailingJob < Struct.new(:scrap)
           end
         end
       end
+    elsif @scrap.url == "Linkedin.com"
+      @file = CSV.generate do |csv|
+        csv << ["id", "firstName", "lastName", "headline", "location", "industry", "publicProfileUrl", 'company name', 'title', 'company size', 'isCurrent']
+      end
     end
     puts "Performed"
   end
