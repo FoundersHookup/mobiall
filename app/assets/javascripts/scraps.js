@@ -4,10 +4,10 @@
 $( document ).ready(function() {
     $("#scrap_url").live('change', function(){
         if(this.value=="Linkedin.com"){
-            $("div.linkedin_fields").show();
+            $("div.linkedin_fields").show('slow');
         }
         else{
-            $("div.linkedin_fields").hide();
+            $("div.linkedin_fields").hide('fast');
         }
     });
 });
