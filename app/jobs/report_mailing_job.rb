@@ -1,6 +1,8 @@
 require 'nokogiri'
 require 'mechanize'
 require 'restclient'
+require 'yaml'
+require 'json'
 require 'csv'
 
 class ReportMailingJob < Struct.new(:scrap)
@@ -98,6 +100,17 @@ class ReportMailingJob < Struct.new(:scrap)
     elsif @scrap.url == "Linkedin.com"
       @file = CSV.generate do |csv|
         csv << ["id", "firstName", "lastName", "headline", "location", "industry", "publicProfileUrl", 'company name', 'title', 'company size', 'isCurrent']
+        json_txt = @scrap.access_token.get("/v1/people-search:(people:(id,first-name,last-name,email-address,headline,industry,location,network,public-profile-url,positions:(title,company:(name,size),is-current)),num-results)?keywords=#{@scrap.keyword.strip.gsub(" ", "+")}&country-code=us&postal-code=#{@scrap.zipcode.strip}&distance=40&facets=location&start=1&count=25&sort=distance", 'x-li-format' => 'json').body
+        profile = JSON.parse(json_txt)
+        
+        if profile["numResults"] > 0
+          profile["people"]["values"].each do |user|
+            next if user['firstName'].eql?("private")
+            user['positions']['values'].each do |pos|
+              csv << [user["id"], user["firstName"], user["lastName"], user["headline"], user["location"]["name"], user["industry"], user["publicProfileUrl"], pos['company']['name'], pos['title'], pos['company']['size'], pos['isCurrent'], ""]
+            end
+        end
+        end
       end
     end
     puts "Performed"
