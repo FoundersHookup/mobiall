@@ -1,12 +1,12 @@
 require 'oauth'
 
 class ScrapsController < ApplicationController
-    consumer_options = { :site => 'https://api.linkedin.com',
-      :authorize_path => '/uas/oauth/authorize',
-      :request_token_path => '/uas/oauth/requestToken',
-      :access_token_path => '/uas/oauth/accessToken' }
+    consumer_options = { :site => APP_CONFIG['api_host'],
+      :authorize_path => APP_CONFIG['authorize_path'],
+      :request_token_path => APP_CONFIG['request_token_path'],
+      :access_token_path => APP_CONFIG['access_token_path'] }
 
-    consumer = OAuth::Consumer.new('hv6bmdgsfd3m', 'rfOvMmqxkVQk7Bto', consumer_options)
+    consumer = OAuth::Consumer.new(APP_CONFIG['linkedin_key'], APP_CONFIG['linkedin_secret'], consumer_options)
 
     # Fetch a new access token and secret from the command line
     @@request_token = consumer.get_request_token

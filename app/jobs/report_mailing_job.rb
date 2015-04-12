@@ -15,8 +15,8 @@ class ReportMailingJob < Struct.new(:scrap)
     if @scrap.url == "alumni.mckinsey.com"
       page = mechanize.get('https://alumni.mckinsey.com/')
       login_form = page.forms.first
-      login_form['login_id'] = "29310"
-      login_form['password'] = "McK1nsey"
+      login_form['login_id'] = APP_CONFIG["alumni_mckinsey_user"]
+      login_form['password'] = APP_CONFIG["alumni_mckinsey_password"]
 
       loggedin_page = login_form.submit
 
@@ -53,8 +53,8 @@ class ReportMailingJob < Struct.new(:scrap)
       page = mechanize.get("https://www.alumni.hbs.edu/community/Pages/directory-search.aspx?q=#{@scrap.keyword}&isHomeSearch=Yes#searchRefreshAnchor")
       login_form = page.forms.first
 
-      login_form['username'] = "rbelani@mba2006.hbs.edu"
-      login_form['password'] = "Nrlife123"
+      login_form['username'] = APP_CONFIG["alumni_hbs_user"]
+      login_form['password'] = APP_CONFIG["alumni_hbs_password"]
 
       result_page = login_form.submit
 
