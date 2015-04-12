@@ -9,4 +9,4 @@
 # and have it return our config option...
 
 require "#{Dir.pwd}/lib/config.rb"
-#APP_CONFIG = YAML.load_file("#{Rails.root}/config/config.yml")[Rails.env]
+APP_CONFIG = YAML.load_file("#{Rails.root}/config/config.yml")[Rails.env]
