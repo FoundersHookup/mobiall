@@ -1,26 +1,26 @@
 development:
-  linkedin_key: xxxxxxxxxxxxxx
-  linkedin_secret: xxxxxxxxxxxxxx
+  linkedin_key: hv6bmdgsfd3m
+  linkedin_secret: rfOvMmqxkVQk7Bto
   api_host: https://api.linkedin.com
   request_token_path: /uas/oauth/requestToken
   access_token_path: /uas/oauth/accessToken
   authorize_path: /uas/oauth/authorize
-  alumni_mckinsey_user: xxxxxxxxxxxxxx
-  alumni_mckinsey_password: xxxxxxxxxxxxxx
-  alumni_hbs_user: xxxxxxxxxxxxxx
-  alumni_hbs_password: xxxxxxxxxxxxxx
+  alumni_mckinsey_user: 29310
+  alumni_mckinsey_password: McK1nsey
+  alumni_hbs_user: rbelani@mba2006.hbs.edu
+  alumni_hbs_password: Nrlife123
 
 test:
 
 
 production:
-  linkedin_key: xxxxxxxxxxxxxx
-  linkedin_secret: xxxxxxxxxxxxxx
+  linkedin_key: hv6bmdgsfd3m
+  linkedin_secret: rfOvMmqxkVQk7Bto
   api_host: https://api.linkedin.com
   request_token_path: /uas/oauth/requestToken
   access_token_path: /uas/oauth/accessToken
   authorize_path: /uas/oauth/authorize
-  alumni_mckinsey_user: xxxxxxxxxxxxxx
-  alumni_mckinsey_password: xxxxxxxxxxxxxx
-  alumni_hbs_user: xxxxxxxxxxxxxx
-  alumni_hbs_password: xxxxxxxxxxxxxx
+  alumni_mckinsey_user: 29310
+  alumni_mckinsey_password: McK1nsey
+  alumni_hbs_user: rbelani@mba2006.hbs.edu
+  alumni_hbs_password: Nrlife123
