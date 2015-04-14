@@ -23,7 +23,11 @@ MobileInterest::Application.routes.draw do
     resources :resources
     resources :requested_users
     resources :feedbacks
-    resources :scraps, :path => 'scraper'
+    resources :scraps, :path => 'scraper' do
+      collection do
+        get :service_restart
+      end
+    end
   # Sample resource route with options:
   #   resources :products do
   #     member do
