@@ -29,4 +29,10 @@ class ScrapsController < ApplicationController
       render :index
     end
   end
+
+  def service_restart
+    system("touch #{Rails.root}/tmp/restart.txt")
+    sleep(3)
+    redirect_to scraps_url
+  end
 end
