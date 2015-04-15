@@ -106,9 +106,12 @@ class ReportMailingJob < Struct.new(:scrap)
         if profile["numResults"] > 0
           profile["people"]["values"].each do |user|
             next if user['firstName'].eql?("private")
+            positions = []
             user['positions']['values'].each do |pos|
-              csv << [user["id"], user["firstName"], user["lastName"], user["headline"], user["location"]["name"], user["industry"], user["publicProfileUrl"], pos['company']['name'], pos['title'], pos['company']['size'], pos['isCurrent'], ""]
+              positions << {:company_name => pos['company']['name'], :title => pos['title'], :size => pos['company']['size']} if pos['isCurrent']
             end
+
+            csv << [user["id"], user["firstName"], user["lastName"], user["headline"], user["location"]["name"], user["industry"], user["publicProfileUrl"], positions.first[:company_name] || "", positions.first[:title] || "", positions.first[:size] || "", "Yes", ""]
         end
         end
       end

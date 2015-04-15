@@ -1,4 +1,6 @@
 require 'oauth'
+require 'yaml'
+require 'json'
 
 class ScrapsController < ApplicationController
     consumer_options = { :site => APP_CONFIG['api_host'],
@@ -17,13 +19,13 @@ class ScrapsController < ApplicationController
   end
 
   def create
-    @scrape = Scrap.new(params[:scrap])
+    @scrap = Scrap.new(params[:scrap])
     if params[:scrap][:url] == "Linkedin.com"
-      @scrape.access_token = @@request_token.get_access_token(:oauth_verifier => params[:scrap][:auth_code].strip)
+      @scrap.access_token = @@request_token.get_access_token(:oauth_verifier => params[:scrap][:auth_code].strip)
     end
 
-    if @scrape.save
-      Delayed::Job.enqueue(ReportMailingJob.new(@scrape))
+    if @scrap.save
+      Delayed::Job.enqueue(ReportMailingJob.new(@scrap))
       redirect_to scraps_url, :notice => "Report will be send to your email."
     else
       render :index
