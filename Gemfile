@@ -30,6 +30,7 @@ gem 'mechanize'
 gem 'rest-client'
 gem "delayed_job"
 gem 'delayed_job_active_record'
+gem 'net-ssh'
 
 # Gems used only for assets and not required
 # in production environments by default.

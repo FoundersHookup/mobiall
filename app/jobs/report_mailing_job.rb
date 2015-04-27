@@ -33,7 +33,7 @@ class ReportMailingJob < Struct.new(:scrap)
 
         people = result_page.search("div[class='member clearfix']")
         @file = CSV.generate do |csv|
-          csv << ["Name", "Email", "Member Type", "Title", "Company", "City"]
+          csv << ["Keyword Input", "Name", "Email", "Member Type", "Title", "Company", "City"]
           people.each do |person|
             next if person.at("div[class='full_name'] a").blank?
             full_name = person.at("div[class='full_name'] a").try(:text)
@@ -45,7 +45,7 @@ class ReportMailingJob < Struct.new(:scrap)
             uri = person.at("div[class='full_name'] a")["href"]
             alumn_detail_page = mechanize.get("https://alumni.mckinsey.com#{uri}")
             alumn_email = alumn_detail_page.search("div.preferred_email").at("span a").text rescue ""
-            csv << [full_name, alumn_email, type, title, company, location]
+            csv << [@scrap.keyword.chomp, full_name, alumn_email, type, title, company, location]
           end
         end
       end
@@ -66,7 +66,7 @@ class ReportMailingJob < Struct.new(:scrap)
 
 
         @file = CSV.generate do |csv|
-          csv << ["Full Name", "Title", "Company", "City", "Email", "Contact Number"]
+          csv << ["Keyword Input", "Full Name", "Title", "Company", "City", "Email", "Contact Number"]
           search_result.css("div.row div.span6 ul li").each do |row|
             name = row.css("div.results-mobile div.span5 span.mu-uc a").text
             city = row.css("div.results-mobile div.span5 span.mu-uc span.ash").text
@@ -74,7 +74,7 @@ class ReportMailingJob < Struct.new(:scrap)
             prof_desc = row.css("div.results-mobile div.span5 div.nu").text
             unless prof_desc.blank?
               title = row.css("div.results-mobile div.span5 div.nu").text.split(",")[0]
-              company = row.css("div.results-mobile div.span5 div.nu").text.split(",")[1].strip
+              company = row.css("div.results-mobile div.span5 div.nu").text.split(",")[1]
             else
               title, company = "", ""
             end
@@ -93,13 +93,13 @@ class ReportMailingJob < Struct.new(:scrap)
               alumn_contact = [nil, nil, nil]
             end
 
-            csv << [name, title, company, city, alumn_email, "#{alumn_contact[1]} / #{alumn_contact[1]}"]
+            csv << [@scrap.keyword.chomp, name, title, company, city, alumn_email, "#{alumn_contact[1]} / #{alumn_contact[1]}"]
           end
         end
       end
     elsif @scrap.url == "Linkedin.com"
       @file = CSV.generate do |csv|
-        csv << ["id", "firstName", "lastName", "headline", "location", "industry", "publicProfileUrl", 'company name', 'title', 'company size', 'isCurrent']
+        csv << ["id", "Keyword Input", "Zipcode Input", "firstName", "lastName", "headline", "location", "industry", "publicProfileUrl", 'company name', 'title', 'company size', 'isCurrent']
         json_txt = @scrap.access_token.get("/v1/people-search:(people:(id,first-name,last-name,email-address,headline,industry,location,network,public-profile-url,positions:(title,company:(name,size),is-current)),num-results)?keywords=#{@scrap.keyword.strip.gsub(" ", "+")}&country-code=us&postal-code=#{@scrap.zipcode.strip}&distance=40&facets=location&start=1&count=25&sort=distance", 'x-li-format' => 'json').body
         profile = JSON.parse(json_txt)
         
@@ -111,7 +111,7 @@ class ReportMailingJob < Struct.new(:scrap)
               positions << {:company_name => pos['company']['name'], :title => pos['title'], :size => pos['company']['size']} if pos['isCurrent']
             end
 
-            csv << [user["id"], user["firstName"], user["lastName"], user["headline"], user["location"]["name"], user["industry"], user["publicProfileUrl"], positions.first[:company_name] || "", positions.first[:title] || "", positions.first[:size] || "", "Yes", ""]
+            csv << [user["id"], @scrap.keyword.strip, @scrap.zipcode.strip, user["firstName"], user["lastName"], user["headline"], user["location"]["name"], user["industry"], user["publicProfileUrl"], positions.first[:company_name] || "", positions.first[:title] || "", positions.first[:size] || "", "Yes", ""]
         end
         end
       end

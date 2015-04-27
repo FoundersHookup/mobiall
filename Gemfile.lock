@@ -261,6 +261,7 @@ DEPENDENCIES
   linkedin-scraper
   mechanize
   mysql2 (= 0.3.11)
+  net-ssh
   nokogiri
   pg
   rails (= 3.2.11)

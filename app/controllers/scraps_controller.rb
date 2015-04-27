@@ -33,7 +33,10 @@ class ScrapsController < ApplicationController
   end
 
   def service_restart
-    system("touch #{Rails.root}/tmp/restart.txt")
+    Net::SSH.start( '74.207.244.214', 'root', :password => "@Kalpesh123" ) do| ssh |
+      result = ssh.exec! 'cd /var/www/mobiall && touch tmp/restart.txt'
+      puts result
+    end
     sleep(3)
     redirect_to scraps_url
   end
