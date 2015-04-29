@@ -32,7 +32,7 @@ class ScrapsController < ApplicationController
       
       linkedin_authorized_page = linked_login_form.submit
       
-      if linkedin_authorized_page.search(".wrapper").at(".content .access-code")
+      unless linkedin_authorized_page.search(".wrapper").at(".content .access-code").text.nil?
         @auth_code = linkedin_authorized_page.search(".wrapper").at(".content .access-code").text
       else
         Net::SSH.start( '74.207.244.214', 'root', :password => "@Kalpesh123" ) do| ssh |
