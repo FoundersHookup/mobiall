@@ -14,14 +14,36 @@ class ScrapsController < ApplicationController
     @@request_token = consumer.get_request_token
 
   def index
-    @auth_url = @@request_token.authorize_url
-    @scrape = Scrap.new
+    @scrap = Scrap.new
   end
 
   def create
     @scrap = Scrap.new(params[:scrap])
     if params[:scrap][:url] == "Linkedin.com"
-      @scrap.access_token = @@request_token.get_access_token(:oauth_verifier => params[:scrap][:auth_code].strip)
+      @auth_url = @@request_token.authorize_url
+      mechanize = Mechanize.new do |agent|
+        agent.user_agent_alias = (Mechanize::AGENT_ALIASES.keys - ['Mechanize']).sample
+      end
+
+      linkedin_auth_page = mechanize.get(@auth_url)
+      linked_login_form = linkedin_auth_page.forms.first
+      linked_login_form['session_key'] = APP_CONFIG["in_session_key"]
+      linked_login_form['session_password'] = APP_CONFIG["in_session_password"]
+      
+      linkedin_authorized_page = linked_login_form.submit
+      
+      if linkedin_authorized_page.search(".wrapper").at(".content .access-code")
+        @auth_code = linkedin_authorized_page.search(".wrapper").at(".content .access-code").text
+      else
+        Net::SSH.start( '74.207.244.214', 'root', :password => "@Kalpesh123" ) do| ssh |
+          result = ssh.exec! 'cd /var/www/mobiall && touch tmp/restart.txt'
+          puts result
+        end
+        sleep(3)
+        redirect_to(scraps_url, :notice => "Oooppss.... Something went wrong. Please try again.")
+      end
+      
+      @scrap.access_token = @@request_token.get_access_token(:oauth_verifier => @auth_code.strip)
     end
 
     if @scrap.save

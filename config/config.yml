@@ -5,6 +5,8 @@ development:
   request_token_path: /uas/oauth/requestToken
   access_token_path: /uas/oauth/accessToken
   authorize_path: /uas/oauth/authorize
+  in_session_key: ravi.belani@gmail.com
+  in_session_password: Nrlife123
   alumni_mckinsey_user: 29310
   alumni_mckinsey_password: McK1nsey
   alumni_hbs_user: rbelani@mba2006.hbs.edu
@@ -20,6 +22,8 @@ production:
   request_token_path: /uas/oauth/requestToken
   access_token_path: /uas/oauth/accessToken
   authorize_path: /uas/oauth/authorize
+  in_session_key: ravi.belani@gmail.com
+  in_session_password: Nrlife123
   alumni_mckinsey_user: 29310
   alumni_mckinsey_password: McK1nsey
   alumni_hbs_user: rbelani@mba2006.hbs.edu
