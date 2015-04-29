@@ -150,3 +150,14 @@ ActiveAdmin.setup do |config|
   # Set the CSV builder options (default is {})
   # config.csv_options = {}
 end
+
+module ActiveAdmin
+  class ResourceController < BaseController
+    module DataAccess
+      alias original_apply_pagination apply_pagination
+      def apply_pagination(chain)
+        request.format == 'text/csv' ? chain.limit(10000) : original_apply_pagination(chain)
+      end
+    end
+  end
+end
